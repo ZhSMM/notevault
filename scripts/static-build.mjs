@@ -428,7 +428,16 @@ function applyTemplate(tpl, vars) {
 async function loadAllNotes(vaultPath) {
   const files = await fg('**/*.md', {
     cwd: vaultPath,
-    ignore: ['.git/**', '.config/**', 'index.sqlite', '**/.DS_Store'],
+    // 永远不要把构建产物 / 隐藏目录当笔记索引
+    ignore: [
+      '.git/**',
+      '.config/**',
+      '.public/**',
+      '**/node_modules/**',
+      '_notevault/**',
+      'index.sqlite',
+      '**/.DS_Store',
+    ],
     dot: false,
     onlyFiles: true,
   })
