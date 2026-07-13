@@ -1,0 +1,274 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --bg: 250 250 250;
+    --bg-soft: 245 245 245;
+    --bg-muted: 240 240 240;
+    --fg: 23 23 23;
+    --fg-muted: 82 82 82;
+    --fg-subtle: 115 115 115;
+    --border: 229 229 229;
+    --accent: 99 102 241;
+    --accent-fg: 255 255 255;
+    --mark: 254 240 138;
+  }
+
+  .dark {
+    --bg: 17 17 19;
+    --bg-soft: 24 24 27;
+    --bg-muted: 32 32 36;
+    --fg: 235 235 235;
+    --fg-muted: 180 180 180;
+    --fg-subtle: 130 130 130;
+    --border: 45 45 50;
+    --accent: 129 140 248;
+    --accent-fg: 17 17 19;
+    --mark: 113 63 18;
+  }
+
+  html, body, #app {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    @apply bg-bg text-fg font-sans antialiased;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm
+           bg-bg-soft hover:bg-bg-muted border border-border
+           text-fg-muted hover:text-fg transition-colors
+           disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+  .btn-primary {
+    @apply bg-accent text-accent-fg border-accent hover:opacity-90;
+  }
+  .btn-ghost {
+    @apply bg-transparent border-transparent hover:bg-bg-soft;
+  }
+  .icon-btn {
+    @apply inline-flex items-center justify-center w-8 h-8 rounded-md
+           text-fg-muted hover:text-fg hover:bg-bg-soft transition-colors;
+  }
+  .input {
+    @apply w-full px-3 py-1.5 rounded-md text-sm
+           bg-bg-soft border border-border
+           placeholder:text-fg-subtle
+           focus:outline-none focus:ring-2 focus:ring-accent/40;
+  }
+  .panel {
+    @apply bg-bg border-r border-border overflow-hidden flex flex-col;
+  }
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(var(--border)) transparent;
+  }
+  .scrollbar-thin::-webkit-scrollbar { width: 8px; height: 8px; }
+  .scrollbar-thin::-webkit-scrollbar-track { background: transparent; }
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background: rgb(var(--border));
+    border-radius: 4px;
+  }
+  .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+    background: rgb(var(--fg-subtle));
+  }
+}
+
+/* Markdown preview styles */
+.md-preview {
+  @apply text-fg leading-relaxed;
+}
+.md-preview h1 { @apply text-3xl font-bold mt-6 mb-4; }
+.md-preview h2 { @apply text-2xl font-semibold mt-5 mb-3 border-b border-border pb-1; }
+.md-preview h3 { @apply text-xl font-semibold mt-4 mb-2; }
+.md-preview h4 { @apply text-lg font-semibold mt-3 mb-2; }
+.md-preview h5 { @apply text-base font-semibold mt-3 mb-2; }
+.md-preview h6 { @apply text-sm font-semibold mt-3 mb-2 text-fg-muted; }
+.md-preview p { @apply my-3; }
+.md-preview ul { @apply list-disc pl-6 my-3; }
+.md-preview ol { @apply list-decimal pl-6 my-3; }
+.md-preview li { @apply my-1; }
+.md-preview blockquote {
+  @apply border-l-4 border-border pl-4 py-1 my-3 text-fg-muted italic;
+}
+
+/* Inline code - bright accent so it stands out */
+.md-preview code:not(pre code):not(.md-code-block code) {
+  @apply px-1.5 py-0.5 rounded font-mono text-[0.88em];
+  background-color: rgb(var(--accent) / 0.10);
+  color: rgb(var(--accent));
+  border: 1px solid rgb(var(--accent) / 0.20);
+}
+.dark .md-preview code:not(pre code):not(.md-code-block code) {
+  background-color: rgb(var(--accent) / 0.18);
+  color: rgb(var(--accent));
+  border-color: rgb(var(--accent) / 0.30);
+}
+
+/* Code block container with toolbar */
+.md-code-wrap {
+  @apply relative my-4 rounded-md overflow-hidden border border-border;
+  background-color: rgb(var(--bg-soft));
+}
+.md-code-toolbar {
+  @apply flex items-center justify-between px-3 py-1.5 text-xs;
+  background-color: rgb(var(--bg-muted));
+  border-bottom: 1px solid rgb(var(--border));
+  color: rgb(var(--fg-muted));
+}
+.md-code-lang {
+  @apply font-mono uppercase tracking-wide text-[0.7rem];
+  letter-spacing: 0.05em;
+}
+.md-code-copy {
+  @apply px-2 py-0.5 rounded text-[0.7rem] font-medium transition-colors;
+  color: rgb(var(--fg-muted));
+}
+.md-code-copy:hover {
+  background-color: rgb(var(--accent) / 0.10);
+  color: rgb(var(--accent));
+}
+
+/* Shiki pre block (after Shiki render) */
+.md-preview pre.shiki,
+.md-preview pre.md-code-block {
+  @apply p-3 overflow-x-auto font-mono text-sm leading-relaxed;
+  margin: 0 !important;
+  background-color: transparent !important;
+}
+.md-preview pre.shiki code,
+.md-preview pre.md-code-block code {
+  @apply font-mono;
+  counter-reset: line;
+  display: block;
+}
+
+/* Shiki dual-theme: span colors come from --shiki-light; dark mode swaps to --shiki-dark */
+.md-preview pre.shiki span {
+  color: var(--shiki-light);
+}
+.dark .md-preview pre.shiki span {
+  color: var(--shiki-dark);
+}
+.md-preview pre.shiki {
+  background-color: var(--shiki-light-bg) !important;
+}
+.dark .md-preview pre.shiki {
+  background-color: var(--shiki-dark-bg) !important;
+}
+
+/* Fallback for unknown langs (no Shiki theme) */
+.md-code-fallback {
+  @apply p-3 my-3 overflow-x-auto font-mono text-sm bg-bg-soft border border-border rounded-md;
+}
+
+/* Mermaid block */
+.mermaid-block {
+  @apply my-4 p-4 rounded-md flex justify-center items-center;
+  background-color: rgb(var(--bg-soft));
+  border: 1px solid rgb(var(--border));
+  min-height: 80px;
+}
+.mermaid-block.mermaid-loading {
+  @apply text-fg-subtle text-sm italic;
+}
+.mermaid-block svg {
+  max-width: 100%;
+  height: auto;
+}
+.mermaid-error {
+  @apply p-3 my-3 text-sm text-red-500;
+  background-color: rgb(var(--bg-soft));
+  border: 1px solid rgb(239 68 68 / 0.4);
+  border-radius: 0.375rem;
+  white-space: pre-wrap;
+}
+.dark .mermaid-error {
+  @apply text-red-300;
+}
+
+.md-preview a { @apply text-accent hover:underline; }
+.md-preview hr { @apply border-border my-6; }
+.md-preview table {
+  @apply border-collapse my-3 w-full;
+}
+.md-preview th, .md-preview td {
+  @apply border border-border px-3 py-1.5;
+}
+.md-preview th { @apply bg-bg-soft font-semibold; }
+.md-preview mark {
+  background-color: rgb(var(--mark) / 0.5);
+  @apply px-0.5 rounded;
+}
+
+/* Wikilink styling */
+.md-preview .wikilink {
+  @apply text-accent hover:underline cursor-pointer;
+}
+.md-preview .wikilink-broken {
+  @apply text-fg-muted italic hover:underline cursor-pointer;
+}
+
+/* Block ref ((blk_xxxx)) */
+.md-preview .block-ref {
+  @apply font-mono text-xs px-1 py-0.5 rounded;
+  background-color: rgb(var(--accent) / 0.10);
+  color: rgb(var(--accent));
+  border: 1px solid rgb(var(--accent) / 0.25);
+  text-decoration: none;
+  cursor: pointer;
+}
+.md-preview .block-ref:hover {
+  background-color: rgb(var(--accent) / 0.20);
+  text-decoration: underline;
+}
+.dark .md-preview .block-ref {
+  background-color: rgb(var(--accent) / 0.20);
+  border-color: rgb(var(--accent) / 0.35);
+}
+
+/* Block-level elements - on hover, show the # anchor */
+.md-preview .md-block {
+  position: relative;
+  scroll-margin-top: 80px;
+}
+.md-preview .md-block-anchor {
+  position: absolute;
+  left: -1.5em;
+  top: 0;
+  width: 1.5em;
+  text-align: center;
+  font-size: 0.85em;
+  color: rgb(var(--fg-subtle));
+  opacity: 0;
+  transition: opacity 0.15s;
+  text-decoration: none;
+  font-weight: 400;
+  user-select: none;
+}
+.md-preview .md-block:hover > .md-block-anchor {
+  opacity: 1;
+}
+.md-preview .md-block-anchor:hover {
+  color: rgb(var(--accent));
+}
+
+/* Flash animation when jumping to a block */
+@keyframes md-block-flash {
+  0% { background-color: rgb(var(--accent) / 0.25); }
+  100% { background-color: transparent; }
+}
+.md-preview .md-block-flash,
+.block-flash {
+  animation: md-block-flash 1.5s ease-out;
+  border-radius: 0.25rem;
+}
