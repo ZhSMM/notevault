@@ -1,0 +1,28 @@
+# Ensure consistent line endings
+* text=auto eol=lf
+
+# Shell scripts: LF
+*.sh        text eol=lf
+*.bash      text eol=lf
+
+# Batch scripts: CRLF
+*.bat       text eol=crlf
+*.cmd       text eol=crlf
+
+# Windows-only files
+*.ico       binary
+*.icns      binary
+*.png       binary
+*.jpg       binary
+*.jpeg      binary
+*.gif       binary
+*.woff      binary
+*.woff2     binary
+*.ttf       binary
+*.eot       binary
+*.wasm      binary
+
+# Lockfiles
+package-lock.json text eol=lf
+pnpm-lock.yaml  text eol=lf
+Cargo.lock       text eol=lf
